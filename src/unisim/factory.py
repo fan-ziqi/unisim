@@ -7,6 +7,7 @@ from typing import Any
 
 from .adapters import adapter_spec
 from .contract import BackendError, SimBackend
+from .registry import backend_registration, create_registered_backend
 
 
 def create_backend(
@@ -27,7 +28,16 @@ def create_backend(
     try:
         spec = adapter_spec(backend_type)
     except KeyError:
-        raise ValueError(f"unknown UniSim backend: {backend_type!r}") from None
+        registration = backend_registration(backend_type)
+        if registration is None:
+            raise ValueError(f"unknown UniSim backend: {backend_type!r}") from None
+        return create_registered_backend(
+            registration,
+            scene,
+            num_envs,
+            sim_dt,
+            {"body_state_required": body_state_required, **kwargs},
+        )
     if spec.status != "available":
         raise BackendError(f"backend '{backend_type}' is not currently available")
     if scene is None and backend_type not in {"isaacgym", "isaacsim"}:

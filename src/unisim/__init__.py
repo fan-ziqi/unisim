@@ -20,10 +20,20 @@ from .contract import (
 from .factory import create_backend
 from .fake import FakeBackend
 from .optional import OptionalDependencyError
+from .registry import (
+    ENTRY_POINT_GROUP,
+    PLUGIN_API_VERSION,
+    BackendRegistration,
+    BackendRegistrationError,
+    discover_backends,
+    register_backend,
+)
 
 __all__ = [
     "BackendCapability",
     "BackendError",
+    "BackendRegistration",
+    "BackendRegistrationError",
     "BenchmarkCase",
     "BenchmarkResult",
     "ADAPTER_SPECS",
@@ -31,6 +41,7 @@ __all__ = [
     "CameraCfg",
     "DebugOverlayGetter",
     "DebugPrimitive",
+    "ENTRY_POINT_GROUP",
     "FakeBackend",
     "DrakeBackend",
     "MJWarpBackend",
@@ -45,6 +56,7 @@ __all__ = [
     "IsaacSimBackend",
     "IsaacSimDependencyError",
     "OptionalDependencyError",
+    "PLUGIN_API_VERSION",
     "SubprocessBackend",
     "MjcfSubprocessBackend",
     "SubprocessWorkerError",
@@ -55,6 +67,8 @@ __all__ = [
     "assert_backend_conformance",
     "adapter_spec",
     "create_backend",
+    "discover_backends",
+    "register_backend",
     "validate_debug_overlays",
 ]
 

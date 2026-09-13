@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Add the versioned ``unisim.backends`` third-party provider entry-point
+  contract.  ``create_backend()`` now discovers a requested external backend
+  lazily and validates its immutable registration, returned ``SimBackend``
+  identity, and declared capabilities.  Conflicting providers and all invalid
+  registrations fail closed; the built-in adapter manifest remains unchanged.
+
 ## 1.2.0 - 2026-09-10
 
 - Promote the current contract and adapter surface to the `1.2.x` line. No

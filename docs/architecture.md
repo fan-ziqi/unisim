@@ -22,6 +22,24 @@ it does not claim that a proprietary SDK or GPU runtime is installed on every
 host. Runtime support is established by the adapter's optional-extra and
 worker smoke tests.
 
+## Third-party backend providers
+
+The built-in manifest is not an extension registry.  An external package
+registers a backend through the versioned ``unisim.backends`` Python entry
+point group.  The entry-point name is the requested backend name and its
+callable returns ``unisim.BackendRegistration``.  The registration declares a
+factory, the coarse contract capabilities it requires, and
+``PLUGIN_API_VERSION``.  ``create_backend(name, ...)`` loads only the matching
+entry point, passes the original scene, vectorization and backend keywords to
+that factory, then verifies that the returned object is a ``SimBackend`` whose
+identity and capabilities match the declaration.  Multiple providers for one
+name, ABI-version mismatches, invalid factories, and false capability claims
+are errors; no engine fallback is attempted.
+
+``unisim.discover_backends()`` is the explicit cold-path API for enumerating
+all installed providers.  Merely importing ``unisim`` never imports those
+packages or their native runtimes.
+
 All asset and model metadata resolution is a cold-path concern. Hot-path
 `step`/`reset` code receives validated arrays and cached identifiers; adapters
 must not probe private engine attributes dynamically.
